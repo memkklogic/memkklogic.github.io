@@ -1,0 +1,899 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>On Memorization of Large Language Models in Logical Reasoning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by freehtml5.co" />
+	<meta name="keywords"
+		content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="freehtml5.co" />
+
+	<!-- 
+	//////////////////////////////////////////////////////
+
+	FREE HTML5 TEMPLATE 
+	DESIGNED & DEVELOPED by FreeHTML5.co
+		
+	Website: 		http://freehtml5.co/
+	Email: 			info@freehtml5.co
+	Twitter: 		http://twitter.com/fh5co
+	Facebook: 		https://www.facebook.com/fh5co
+
+	//////////////////////////////////////////////////////
+	 -->
+
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:description" content="" />
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js">
+		</script>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			border: 1px solid lightgray;
+			padding: 10px !important;
+			text-align: left;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		.highlight {
+			background-color: #d9fdd3;
+		}
+		.pbox {
+			display: inline-block;
+			width: 100%;
+		}
+
+
+		.fontGrad-bg {
+			font-weight: 700;
+			background-image: -webkit-linear-gradient(135deg, #FF5722 0%, #9e6eb0 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			text-fill-color: transparent;
+		}
+
+		/* Styles for selected text */
+		.fontGrad-bg::selection {
+			background-color: #8E44AD;
+			color: #FFFFFF;
+			-webkit-text-fill-color: #FFFFFF;
+		}
+
+		/* For Firefox */
+		.fontGrad-bg::-moz-selection {
+			background-color: #8E44AD;
+			color: #FFFFFF;
+			-webkit-text-fill-color: #FFFFFF;
+		}
+
+
+	</style>
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const navItems = document.querySelectorAll('#nav-list li');
+	
+			navItems.forEach(item => {
+				item.addEventListener('click', function(e) {
+					const link = this.querySelector('a');
+					const href = link.getAttribute('href');
+	
+					// Handle "index.html" separately
+					if (href === 'index.html') {
+						// If we're already on index.html, prevent default and scroll to top
+						if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+							e.preventDefault();
+							window.scrollTo({top: 0, behavior: 'smooth'});
+						}
+						// Otherwise, let the default link behavior happen (navigate to index.html)
+					} else {
+						e.preventDefault();
+	
+						const targetId = href.substring(1);
+						const targetElement = document.getElementById(targetId);
+	
+						if (targetElement) {
+							const yOffset = -50; // 50px higher than the reference
+							const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+	
+							window.scrollTo({top: y, behavior: 'smooth'});
+						}
+					}
+	
+					// Update active class
+					navItems.forEach(navItem => {
+						navItem.classList.remove('active');
+					});
+					this.classList.add('active');
+				});
+			});
+		});
+	</script>
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">	 -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> -->
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="css/flexslider.css">
+	<!-- <link rel="stylesheet" href="static/css/fontawesome.all.min.css"> -->
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+	<div class="fh5co-loader"></div>
+
+	<div id="page">
+		<nav class="fh5co-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-2">
+							<div id="fh5co-logo"><a href="index.html">Mem<span>KK</span></a></div>
+						</div>
+						<div class="col-xs-10 text-right menu-1">
+							<ul  id="nav-list">
+								<li class="active"><a href="index.html">Overview</a></li>
+								<li><a href="#proposal">Metric and Dataset</a></li>
+								<li><a href="#quantifymem">Memorization</a></li>
+								<li><a href="#reasondirectft">Reasoning</a></li>
+								<li><a href="#distinguish">Distinguish</a></li>
+								<li><a href="#limitations">Limitations</a></li>
+								<li><a href="#reference">BibTeX</a></li>
+
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</nav>
+
+		<header id="fh5co-header" class="fh5co-cover" role="banner", >
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="columns">
+					<div class="col-md-12">
+						<h1>On Memorization of Large Language Models in Logical Reasoning</h1>
+						<div>
+							<span class="author-block">
+								<a href="https://alphapav.github.io">Chulin Xie<sup>2</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://hazelsuko07.github.io/yangsibo/">Yangsibo Huang<sup>1,3</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://pluskid.org">Chiyuan Zhang<sup>1</sup></a>,
+							</span>
+							<br>
+							<span class="author-block">
+								<a href="https://dayu11.github.io//">Da Yu<sup>1</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://jungyhuk.github.io/">Xinyun Chen<sup>1</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://yuchenlin.xyz/">Bill Yuchen Lin<sup>4</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://aisecure.github.io/">Bo Li<sup>2</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://sites.google.com/view/badihghazi/home">Badih Ghazi<sup>1</sup></a>,
+							</span>
+							<span class="author-block">
+								<a href="https://sites.google.com/site/ravik53/">Ravi Kumar<sup>1</sup></a>
+							</span>
+						</div>
+
+						<div class="column">
+							<!-- <br> -->
+							<span class="author-block"><sup>1</sup>Google, <sup>2</sup>University of Illinois
+								Urbana-Champaign, <sup>3</sup>Princeton University, <sup>4</sup>Allen Institute for
+								AI</span>
+						</div>
+
+						
+
+						<div class="column has-text-centered" id="links">
+
+							<div class="publication-links">
+								<br>
+								<!-- PDF Link. -->
+								<span class="link-block">
+									<a href="https://arxiv.org/abs/"
+										class="external-link button is-normal is-rounded is-dark">
+										<span class="icon">
+											<i class="fas fa-file-pdf"></i>
+										</span>
+										<span class="button-62">Paper</span>
+									</a>
+								</span>
+
+								<!-- Code Link. -->
+								<span class="link-block">
+									<a href="https://github.com/"
+										class="external-link button is-normal is-rounded is-dark">
+										<span class="icon">
+											<i class="fab fa-github"></i>
+										</span>
+										<span class="button-62">Code</span>
+									</a>
+								</span>
+								<!-- Dataset Link. -->
+								<span class="link-block">
+									<a href="https://huggingface.co/datasets/K-and-K/knights-and-knaves/"
+										class="external-link button is-normal is-rounded is-dark">
+										<span class="icon">
+											<i class="fas fa-database"></i>
+										</span>
+										<span class="button-62">Dataset</span>
+									</a>
+								</span>
+								<!-- Dataset Link. -->
+								<span class="link-block">
+									<a href="https://huggingface.co/datasets/K-and-K/perturbed-knights-and-knaves/"
+										class="external-link button is-normal is-rounded is-dark">
+										<span class="icon">
+											<i class="fas fa-database"></i>
+										</span>
+										<span class="button-62">Perturbed Dataset</span>
+									</a>
+								</span>
+								<!-- Leaderboard Link. -->
+								<span class="link-block">
+									<a href="https://huggingface.co/spaces/"
+										class="external-link button is-normal is-rounded is-dark">
+										<span class="icon">
+											<i class="far fa-chart-bar"></i>
+										</span>
+										<span class="button-62">Leaderboard</span>
+									</a>
+								</span>
+							</div>
+							<div class="column">
+								<br>
+								<p>
+
+									<b>Abstract</b>:
+									Large language models (LLMs) achieve good performance on
+									challenging reasoning benchmarks, yet could also make basic reasoning mistakes.
+									
+									One hypothesis is that the increasingly high and nearly saturated performance on
+									common reasoning benchmarks could be due to the memorization of similar problems.
+									In this paper, we systematically investigate this hypothesis with a quantitative
+									measurement of memorization in <i>reasoning</i> tasks, using <span
+										class="fontGrad-bg">a dynamically generated logical reasoning benchmark based on
+										Knights and Knaves (K&K) puzzles</span>.
+								<ul>
+									<li>
+										We found that LLMs could interpolate the training puzzles (achieving
+										near-perfect
+										accuracy) after fine-tuning, yet fail when those puzzles are slightly perturbed,
+										suggesting that the <span class="fontGrad-bg">models heavily rely on
+											memorization to
+											solve those training puzzles</span>.
+									</li>
+									<li>
+										On the other hand, we show that while fine-tuning leads to heavy memorization,
+										it
+										also consistently improves generalization performance. In-depth analyses with
+										perturbation tests, cross difficulty-level transferability, probing model
+										internals,
+										and fine-tuning with wrong answers suggest that the <span
+											class="fontGrad-bg">LLMs
+											learn to reason on K&K puzzles despite training data memorization</span>.
+									</li>
+
+									<li>
+										Finally, our analysis based on a per-sample memorization score sheds light on
+										how
+										LLMs switch between reasoning and memorization when solving logical puzzles.
+									</li>
+								</ul>
+
+
+								</p>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+	</div>
+	</div>
+
+	</header>
+
+	<section class="hero" , id="proposal" , style="background-color:  #f5f5f5;">
+		<div id="fh5co-wireframe">
+			<div class="container">
+				<!-- <div class="row animate-box"> -->
+				<div class="fh5co-heading">
+					<h2 class="title is-3" style="font-size: 28px !important;">How to Measure Memorization in Reasoning
+						Tasks</h3>
+						<p>A proposed memorization metric for reasoning task, and a new logical reasoning dataset.
+						</p>
+				</div>
+				<!-- </div> -->
+				<div class="row">
+					<div class="col-md-14 animate-box">
+						<div class="user-frame">
+							<h3 style="font-size: 24px">
+								<img src="images/paper/root-cause.png" alt="Icon" ,
+									style="vertical-align: middle; margin-right: 20px; width: 64px; height: 60px;">
+								Memorization metric for reasoning tasks
+							</h3>
+							Memorization of LLMs has been studied in various contexts such as <a
+								href="https://arxiv.org/abs/2202.07646">privacy</a>, <a
+								href="https://aclanthology.org/2023.emnlp-main.458/">copyright</a>, and <a
+								href="https://arxiv.org/abs/2310.18362">knowledge intensive tasks</a>.
+							We focus on measuring memorization when solving <i>reasoning</i> tasks, based on the
+							following characteristic:
+
+							<ul>
+								<li><b>high accuracy on the observed problems</b> (e.g., <i>high
+										\(\mathsf{Acc}(f;\mathcal{D})\) of model \(f\) on training dataset
+										\(\mathcal{D}\)</i>);
+								<li><b>low accuracy on when the problem is slightly changed</b> (e.g., <i>low
+										consistency ratio \(\mathsf{CR}(f;\mathcal{D})\) between # consistently solved
+										problems after some local perturbations and # solved problems</i>).</li>
+							</ul>
+							Combining above two factors → Local Inconsistency-based Memorization Score:
+							\(\mathsf{LiMem}(f,\mathcal{D})=\mathsf{Acc}(f;\mathcal{D})\cdot(1-\mathsf{CR}(f;\mathcal{D})
+							)\).
+
+							<br>
+							<br>
+							<img src="./images/paper/KK-LiMem-Def.svg" alt="pipeline" class="img-responsive">
+						</div>
+
+					</div>
+					<br>
+					<br>
+
+					<div class="col-md-14 animate-box">
+						<div class="user-frame">
+							<h3 style="font-size: 24px">
+								<img src="images/paper/settings.png" alt="Icon" ,
+									style="vertical-align: middle; margin-right: 15px; width: 48px; height: 45px;">Knights
+								and Knaves logical reasoning benchmark
+							</h3>
+
+							<p>To facilitate our memorization study, we propose a new logical reasoning benchmark that
+								supports <span class="fontGrad-bg">automatic problem perturbations</span>.</p>
+
+							Knights and Knaves (K&K) (<a
+								href="https://www.sciencedirect.com/science/article/pii/001002779090054N">Johnson-Laird
+								& Byrne, 1990</a>)
+							is a type of logical puzzle where some characters tell truth, and others only lie.
+							The goal is to infer each character’s truthfulness.
+
+							Based on the K&K puzzle, we design a <i>dynamic</i> benchmark that supports:
+
+							<ul>
+								<li><b>generating new puzzles with detailed reasoning steps and solutions</b>; </li>
+								<ul>
+									<li>The problem specification, \(N\)-people puzzle, statement depth \(D\), statement
+										width \(W\), defines the problem difficulty.</li>
+									<li>We support logical statement types including <i>and, or, not, imply, and
+											equivalence</i>.</li>
+								</ul>
+								<li><b>perturbing a given puzzle locally</b> and recompute the new reasoning steps and
+									solution.</li>
+								<ul>
+									<li>Math-level: replace an <b>entire statement</b> or a <b>leaf node</b> in a
+										statement with a newly sampled one.
+
+									</li>
+									<li>Language-level: changing <b>person names</b> (e.g., Oliver/Jacob →
+										Elowen/Osiris), pairs of <b>role names</b> (e.g., knight/knaves → saint/sinner),
+										<b>statements order</b>, and <b>role flipping</b> (e.g., knight/knaves →
+										knaves/knight).
+									</li>
+								</ul>
+							</ul>
+
+							<img src="./images/paper/KK-Data-Generation-v2.svg" alt="pipeline" class="img-responsive">
+							<br>
+
+							<div style="border: 2px solid #000; border-radius: 10px; padding: 10px; width: 90%; margin: 0 auto; background-color: rgb(240, 250, 255);"
+								class="mt-2">
+								<center>
+
+									Abstract and natural language modules generate question answer pair and synthetic
+									CoTs for each K&K sample.
+									<br>
+									Perturbers in these modules can alter the math structure and language description,
+									respectively.
+								</center>
+							</div>
+
+
+
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<div id="fh5co-wireframe">
+			<div class="container">
+				<div class="services-padding">
+					<div class="row">
+						<div class="fh5co-heading">
+							<h2 class="title is-3" style="font-size: 28px !important; margin-top: -90px;">Data Explorer</h2>
+							<p>You can download our data on Hugging Face <a href="https://huggingface.co/datasets/K-and-K/knights-and-knaves/">🔗</a>.</p>
+						</div>
+
+					
+						
+						  <div class="col-md-14"  , style=" margin-top: -80px;">
+							<div id="prompt-container"></div>
+							<script src="js/data.js"></script>
+							<script src="js/explorer.js"></script>
+							<script>
+								document.addEventListener('DOMContentLoaded', function() {
+									PromptSelector.init('prompt-container');
+								});
+							</script>
+						  </div>
+						  
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="hero" , id="quantifymem">
+		<div id="fh5co-features">
+			<div class="container">
+				<div class="services-padding">
+					<div class="row">
+						<div class="fh5co-heading">
+							<!-- style="margin: 0%;" -->
+							<h2 class="title is-3" style="font-size: 28px !important;">Quantifying Memorization in LLM
+								Reasoning</h2>
+							<p>From off-the-shelf models to fine-tuned models (finetuning with CoTs and finetuning with
+								answers only).
+							</p>
+						</div>
+
+
+						<h3 class="title is-4" style="font-size: 22px !important;">Off-the-shelf Models</h3>
+
+
+						Eval setup: 0-shot direct prompting with task-specific instructions for open-ended
+						question-answering. We create 100 test puzzles for each N-people task.
+						<div style="text-align: center;">
+							<img src="images/paper/off-the-shelf.png" style="max-width: 80%; height: auto;">
+						</div>
+						<ol>
+							<li>K&K benchmark poses a challenging logical reasoning task for all off-the-shelf models.
+								Performance drops significantly as the complexity increases (the best accuracy is only
+								11% for 8-people puzzles).</li>
+							<li>Off-the-shelf models are sensitive to locally perturbed test samples. When a model has
+								relatively high accuracy, the memorization scores under local perturbation are generally
+								high.</li>
+						</ol>
+						<br>
+						<h3 class="title is-4" style="font-size: 22px !important;">Fine-tuned Models</h3>
+
+						<p>FT setup: fine-tuning with detailed synthetic CoT steps and answer (<b>CoT FT</b>) and
+							fine-tuning with the answers (<b>Direct FT</b>). We fine-tune the models for each N-people
+							task (1000 training samples) separately.</p>
+						
+						<div class="col-md-5 animate-box">
+							<div class="feature-copy">
+								<h4>LLMs interpolate K&K training puzzles</h3>
+									<p><img src="images/paper/interpo-train.png"
+											style="max-width: 80%; height: auto; margin: 0 auto;"></p>
+									<ol>
+										<li>Train & test accuracy increases over the epochs. FTed LLMs can achieve
+											interpolation (≈ 100% train accuracy) for easy tasks, e.g., 3/5-people
+											puzzles. </li>
+										<li>Llama3-8B struggles with CoT FT, likely due to its limited capacity.</li>
+									</ol>
+
+							</div>
+						</div>
+
+						<div class="col-md-7 animate-box">
+							<div class="feature-copy">
+								<h4>Large memorization scores on training examples</h3>
+									<p><img src="images/paper/train-memo-score.png"
+											style="max-width: 100%; height: auto;"></p>
+									<ol>
+										<li>Fine-tuned LLMs exhibit high memorization score on the training set under
+											different perturbations, especially for hard tasks. </li>
+										<li>Models show stronger memorization under math-level perturbations compared to
+											language-level perturbations.</li>
+										<li>The memorization score on the test set can be smaller than on the training
+											set. </li>
+									</ol>
+							</div>
+						</div>
+
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+
+
+	<section class="hero" , id="reasondirectft">
+		<div id="fh5co-features">
+			<div class="container">
+				<div class="services-padding">
+					<div class="row">
+						<div class="fh5co-heading">
+							<h2 class="title is-3" style="font-size: 28px !important;">LLM Learns to Reason by
+								Fine-tuning
+								with Answers Only</h2>
+							<p>Compared to CoT FT, learning from only answers (Direct FT) without detailed reasoning
+								steps is intuitively more challenging, as the models need to come up with the reasoning
+								procedures on their own.
+								It turns out that models can learn to reason K&K puzzles well directly from observing
+								only question-answer pairs,
+
+							</p>
+						</div>
+
+
+						<h3 class="title is-4" style="font-size: 22px !important;">Reasoning Capabilities of Direct
+							FT-ed Model</h3>
+						<div class="col-md-6 animate-box">
+
+							<h4>Generalization performance increases with memorization level</h4>
+							<p>
+							<div style="text-align: center;">
+								<img src="images/paper/test-acc-train-mem.png" style="max-width: 100%; height: auto;">
+							</div>
+							</p>
+
+							<ul>
+								<li> Test accuracy of FTed Llama3-8B on unseen test set continues to increase
+									over epochs, despite that memorization score on training samples increases.
+								</li>
+							</ul>
+							<br>
+
+							<h4>Fine-tuning with 10k 8-people puzzles</h4>
+
+							<div style="display: flex;
+									justify-content: space-between;
+									align-items: flex-start;">
+
+
+								<div style="width: 58%; text-align: left; margin-right: 0%;">
+									<p>Can brute-force finetuning on a large number of puzzles eventually solve K&K
+										tasks?</p>
+									<ol>
+										<li>10k-FT outperforms 1k-FT across all tasks, reaching ∼ 90% test accuracy on
+											4/5-people puzzles. </li>
+										<li>Direct FT with 10k puzzles achieves surprisingly high test accuracy on all
+											tasks. Notably, the transferability to other K&K tasks stems from only
+											learning the answers.
+										</li>
+										<li>CoT FT is generally more effective than Direct FT.
+										</li>
+
+									</ol>
+
+								</div>
+								<div style="width: 40%; text-align: center; margin-left: 0%;">
+									<img src="images/paper/10k-8ppl-ft.png" style="max-width: 100%; height: auto;">
+								</div>
+							</div>
+
+						</div>
+
+						<div class="col-md-6 animate-box">
+
+							<h4>Fine-tuned model generalizes across different difficulty levels</h4>
+							<p>Test accuracy improvement on N-people problems for FTed LLMs on
+								M-people problems, compared to the un-FTed LLM.
+							</p>
+							<ol>
+								<li>Most grid values are above 0, indicating transferability and enhanced reasoning
+									abilities across unseen eaiser & harder problems. </li>
+								<li>More training epochs (e.g., 50 vs. 5) improve results, especially for Llama3-8B.
+								</li>
+
+							</ol>
+							<div style="text-align: center;">
+
+								<p>GPT4o-mini CoT FT / GPT4o-mini Direct FT<br>
+									<img src="images/paper/generalize-diff-level-gpt4omini.png"
+										style="max-width: 70%; height: auto;">
+								</p>
+
+
+							</div>
+							<div style="text-align: center;">
+								<p>Llama3-8B Direct FT<br>
+									<img src="images/paper/generalize-diff-level-llama.png"
+										style="max-width: 70%; height: auto;">
+								</p>
+							</div>
+
+						</div>
+
+
+
+
+					</div>
+
+					<br>
+					<br>
+					<div class="row">
+						<h3 class="title is-4" style="font-size: 22px !important;">Probing Direct FT-ed Model</h3>
+						<p>
+							We use probing techniques <a href="https://arxiv.org/abs/1909.03368">(Hewitt & Liang,
+								2019)</a> to analyze internal representations of
+							Direct FTed models on K&K related tasks, to see whether they develops internal understanding
+							of K&K related reasoning skills when learning only from the answers.
+							The probing task: distinguish correct from incorrect statements in a given puzzle based on
+							the model's intermediate outputs.
+						</p>
+						<!-- For each test puzzle, we report the per-layer probing accuracy <i>averaged</i> across seven
+						Direct FTed models (each Direct FTed on an {2, 3, . . . , 8 }-people task). -->
+
+
+						<div class="col-md-6 animate-box">
+							<div style="text-align: center;">
+								Probing accuracy for <b>Direct-FTed</b> Llama3-8B
+								<img src="images/paper/probe-ft.png" style="max-width: 110%; height: auto;">
+							</div>
+
+						</div>
+
+
+						<div class="col-md-6 animate-box">
+							<div style="text-align: center;">
+								Probing accuracy for <b>un-FTed</b> Llama3-8B
+								<img src="images/paper/probe-unft.png" style="max-width: 110%; height: auto;">
+							</div>
+
+						</div>
+
+						<div class="col-md-12 animate-box">
+
+							<br>
+							<ol>
+						
+								<li>The near-perfect peak accuracy suggests that the model’s internal representations
+									have a distinction between true/false statements about a given puzzle. </li>
+
+								<li>The probing accuracy is much higher than un-FTed model, suggesting that such
+									representations are learned from question-answer pairs during Direct FT. </li>
+							</ol>
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+			</div>
+		</div>
+
+	</section>
+
+	<section class="hero" , id="distinguish">
+		<div id="fh5co-features">
+			<div class="container">
+				<div class="services-padding">
+					<div class="row">
+
+						<div class="fh5co-heading">
+							<h2 class="title is-3" style="font-size: 28px !important;">Distinguishing Memorization from
+								Reasoning</h2>
+							<p>Is there a simple indicator that determines whether a model would solve a given puzzle by
+								reasoning or memorization?</p>
+						</div>
+
+
+						<p>
+							We collect correctly solved training samples by the targeted LLM, and assign a binary
+							categorical label as either “consistently solved” (i.e., solved by reasoning) puzzle or “not
+							consistently solved” (i.e., solved by memorization) puzzle under local perturbation.
+							We train a simple logistic regression model to solve this binary classification problem.
+						</p>
+
+
+						<div class="col-md-6 animate-box">
+							<h4>Puzzle-based indicators</h4>
+							<p>
+								We consider text features including TF-IDF, Bag-of-Words, Word Length, Character Length
+								of different text fields of the puzzles.
+							<div style="text-align: center;">
+								<img src="images/paper/puzzle-indicator.png" style="max-width: 100%; height: auto;">
+							</div>
+							</p>
+
+
+							<ol>
+								<li> We observe a best test AUC of 0.629/0.787 for Direct/CoT FT-ed GPT4o-mini, and
+									0.627 for Direct FT-ed Llama3-8B.
+								</li>
+								<li> Puzzle-based indicators could be informative, though not perfect, at determining
+									which examples are reasoned vs. memorized.
+								</li>
+							</ol>
+							<br>
+						</div>
+
+						<div class="col-md-6 animate-box">
+							<h4>Model-based indicators</h4>
+							<p>
+								We feed each puzzle question to the FT-ed/unFT-ed model, collect the average embedding
+								at each layer as model-based indicator.
+							<div style="text-align: center;">
+								<img src="images/paper/model-indicator.png" style="max-width: 100%; height: auto;">
+							</div>
+							</p>
+
+
+							<ol>
+								<li> The features from the FTed model are consistently more informative than the un-FTed
+									model, suggesting that the model’s decision regarding memorization vs. reasoning on
+									specific samples likely stems from the fine-tuning process.
+								</li>
+								<li> The best model embedding-based indicator provides stronger signals than the
+									puzzle-based indicator for Llama3-8B.
+								</li>
+							</ol>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+
+	</section>
+
+
+
+	<section class="hero" , id="limitations">
+		<div id="fh5co-started">
+			<div class="overlay"></div>
+			<div class="container">
+
+				<div class="row">
+					<div class="col-md-12 animate-box">
+						<div class="user-frame">
+							<h3 style="text-decoration: underline">Limitations & Discussion</h3>
+
+							Our results reveal intricate phenomena of the interplay between reasoning and memorization,
+							but challenging questions remain open:
+							<ol>
+								<li> While a model’s reasoning capabilities improve during finetuning as it memorizes
+									more training puzzles, it is unclear exactly how those capabilities develop,
+									especially when fine-tuned on only question-answer pairs without detailed reasoning
+									steps.
+
+								</li>
+								<li>
+									While the models’ reasoning capabilities can be significantly improved after
+									fine-tuning, they have not reached 100% test accuracy yet. Is it because the models
+									only learned some “shortcut rules” that can only solve a specific subset of puzzles?
+									If so, what are the shortcuts?
+
+
+								</li>
+								<li>
+									Since some model-based indicators can approximately predict when the model is
+									solving a specific puzzle by memorization vs by reasoning, can we further design
+									intervention mechanisms to bias the model towards reasoning during inference or
+									training time?
+
+								</li>
+							</ol>
+
+							If you have any thoughts or are interested in this line of research, feel free to <a
+								href="mailto:chulinx2@illinois.edu">reach out to us</a>.
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-12 fh5co-widget" , id="reference">
+					<h4>BibTeX</h4>
+					<p>If you find our code and paper helpful, please consider citing our work:
+					</p>
+					<pre><code>
+@inproceedings{
+	xie2024large,
+	title={On Memorization of Large Language Models in Logical Reasoning},
+	author={Chulin Xie and Yangsibo Huang and Chiyuan Zhang and Da Yu and Xinyun Chen and Bill Yuchen Lin and Bo Li and Badih Ghazi and Ravi Kumar},
+	booktitle={arXiv},
+	year={2024},
+	url={}
+	}
+					</code></pre>
+				
+
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
+	</div>
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Flexslider -->
+	<script src="js/jquery.flexslider-min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+</body>
+
+</html>
