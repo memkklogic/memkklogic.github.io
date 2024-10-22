@@ -200,6 +200,33 @@ const PromptSelector = (function() {
             .response-content .response-label {
                 margin-right: 5px;
             }
+            
+            /* Improved select styles for model and prompt selection */
+            #modelSelect,
+            #promptSelect {
+                padding: 10px;
+                font-size: 14px;
+                color: #333;
+                background-color: #f0f0f0;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                width: auto;
+                max-width: 100%;
+                transition: all 0.3s ease;
+            }
+
+            #modelSelect:hover,
+            #promptSelect:hover {
+                background-color: #e0e0e0;
+                border-color: #888;
+            }
+
+            #modelSelect:focus,
+            #promptSelect:focus {
+                border-color: #666;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
         `;
         document.head.appendChild(style);
     }
