@@ -1,3 +1,4 @@
+
 const PromptSelector = (function() {
 
     function displayPromptDetails(promptData, container) {
@@ -307,23 +308,78 @@ const PromptSelector = (function() {
             const responseElement = document.createElement('div');
             responseElement.classList.add('response');
 
-            // Create response content
             function createResponseItem(labelText, contentText) {
-                const item = document.createElement('div');
-                item.className = 'response-content';
-
-                const label = document.createElement('span');
+                // Inject styles only if they haven't been added before
+                if (!document.getElementById('response-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'response-style';
+                    style.textContent = `
+                        .response-container {
+                            display: flex;
+                            gap: 20px;
+                            margin-bottom: 10px;
+                        }
+                        .response-label-container {
+                            flex: 0 0 100px;
+                            padding: 10px;
+                            
+                        }
+                        .response-content-container {
+                            flex: 1;
+                            max-height: 500px;
+                            overflow-y: auto;
+                            padding: 10px;
+           
+                        }
+                        .response-label {
+                            font-weight: bold;
+                            display: block;
+                        }
+                        .response-text {
+                            display: block;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            
+                // Create the container for both items
+                const container = document.createElement('div');
+                container.className = 'response-container';
+            
+                // Create the label container
+                const labelContainer = document.createElement('div');
+                labelContainer.className = 'response-label-container';
+                const label = document.createElement('div');
                 label.className = 'response-label';
                 label.textContent = labelText;
-
-                const content = document.createElement('span');
-                content.textContent = contentText;
-
-                item.appendChild(label);
-                item.appendChild(content);
-
-                return item;
+                labelContainer.appendChild(label);
+            
+                // Create the content container
+                const contentContainer = document.createElement('div');
+                contentContainer.className = 'response-content-container';
+            
+                // Ensure contentText is a string to avoid TypeError
+                const text = (contentText !== undefined && contentText !== null) ? String(contentText) : '';
+            
+                // Process text to handle line breaks and bold formatting
+                const formattedContent = text
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            
+                // Create and append content with formatted HTML
+                const content = document.createElement('div');
+                content.className = 'response-text';
+                content.innerHTML = formattedContent;
+                contentContainer.appendChild(content);
+            
+                // Append both containers to the main container
+                container.appendChild(labelContainer);
+                container.appendChild(contentContainer);
+            
+                return container;
             }
+            
+
 
             responseElement.appendChild(createResponseItem('Response: ', modelData.response));
             responseElement.appendChild(createResponseItem('Parsed Answer: ', modelData.parsedResult));
